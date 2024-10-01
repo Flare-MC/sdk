@@ -1,5 +1,8 @@
 package com.flare.sdk.platform
 
+import com.flare.sdk.FlareConfiguration
+import java.nio.file.Path
+
 
 /*
  * Project: sdk
@@ -9,5 +12,6 @@ package com.flare.sdk.platform
 interface Platform {
 
     val platformType: PlatformType
+    val dataDirectory: Path
 
 }
