@@ -7,6 +7,7 @@ package com.flare.sdk
  * Created by: Dani-error
  */
 data class FlareConfiguration(
+    val entrypoint: Class<*>,
     val name: String,
     val description: String,
     val version: String,
