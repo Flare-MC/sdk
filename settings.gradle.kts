@@ -3,3 +3,4 @@ plugins {
 }
 rootProject.name = "sdk"
 
+include(":platform:spigot", ":platform:bungee", ":platform:velocity", ":platform:common")

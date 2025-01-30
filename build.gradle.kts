@@ -6,15 +6,9 @@ plugins {
 val projectVersion: String by project
 val projectGroup: String by project
 
-group = projectGroup
-version = projectVersion
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     testImplementation(kotlin("test"))
+    implementation(project(":platform:common"))
 }
 
 tasks.test {
@@ -40,6 +34,30 @@ publishing {
     }
 }
 
+allprojects {
+    apply(plugin = "kotlin")
+
+    group = "$projectGroup.sdk"
+    version = projectVersion
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation(kotlin("stdlib"))
+    }
+
+    kotlin {
+        jvmToolchain(8)
+    }
+
+}
+
+group = projectGroup
+version = projectVersion
+
 tasks.named("build") {
+    dependsOn(subprojects.map { it.tasks.named("build") })
     finalizedBy("publishToMavenLocal")
 }
