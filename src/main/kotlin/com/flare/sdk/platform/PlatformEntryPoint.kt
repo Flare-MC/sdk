@@ -8,8 +8,10 @@ import com.flare.sdk.player.AbstractPlayerManager
  * Created at: 30/01/2025 20:28
  * Created by: Dani-error
  */
-interface PlatformEntryPoint {
+interface PlatformEntryPoint<T> {
 
     val playerManager: AbstractPlayerManager<*>
+
+    fun setupEvents(plugin: T)
 
 }

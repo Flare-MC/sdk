@@ -3,8 +3,10 @@
 package com.flare.sdk.spigot
 
 import com.flare.sdk.platform.PlatformEntryPoint
-import com.flare.sdk.player.AbstractPlayerManager
+import com.flare.sdk.spigot.player.PlayerListener
 import com.flare.sdk.spigot.player.PlayerManager
+import org.bukkit.Bukkit
+import org.bukkit.plugin.java.JavaPlugin
 
 
 /*
@@ -12,8 +14,12 @@ import com.flare.sdk.spigot.player.PlayerManager
  * Created at: 30/01/2025 20:30
  * Created by: Dani-error
  */
-class SpigotPlatform : PlatformEntryPoint {
+class SpigotPlatform : PlatformEntryPoint<JavaPlugin> {
 
-    override val playerManager: AbstractPlayerManager<*> = PlayerManager()
+    override val playerManager: PlayerManager = PlayerManager()
+
+    override fun setupEvents(plugin: JavaPlugin) {
+        Bukkit.getPluginManager().registerEvents(PlayerListener(playerManager), plugin)
+    }
 
 }

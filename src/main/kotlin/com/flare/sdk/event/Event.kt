@@ -6,7 +6,13 @@ package com.flare.sdk.event
  * Created at: 14/01/2025 21:33
  * Created by: Dani-error
  */
-open class Event
+open class Event {
+
+    fun call() {
+        EventBus.post(this)
+    }
+
+}
 
 open class EventCancellable(var cancelled: Boolean = false) : Event() {
 

@@ -20,9 +20,8 @@ abstract class AbstractPlayerManager<T> {
         return binded
     }
 
-    fun removePlayer(player: T) {
+    fun removePlayer(player: T): Player? =
         players.remove(player)
-    }
 
     fun getPlayer(player: T): Player? =
         players[player]

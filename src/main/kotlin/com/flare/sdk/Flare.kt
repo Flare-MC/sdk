@@ -27,7 +27,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     private val enableMethod: Method?
     private val disableMethod: Method?
 
-    private var init: Boolean = false
+    private val platformEntryPoint: PlatformEntryPoint<*>?
     lateinit var playerManager: AbstractPlayerManager<*>
 
     init {
@@ -74,21 +74,21 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
 
         val platformEntry = platform.platformType.entrypoint
 
+        val instance: PlatformEntryPoint<*>?
         if (platformEntry.interfaces.any { it == PlatformEntryPoint::class.java }) {
             try {
-                val instance = platformEntry.getConstructor().newInstance() as PlatformEntryPoint
+                instance = platformEntry.getConstructor().newInstance() as PlatformEntryPoint<*>
 
                 playerManager = instance.playerManager
-
-                init = true
             } catch (e: Exception) {
                 throw FlareException("An exception occurred while creating a platform entry point instance. ${e.message}")
             }
-        }
+        } else instance = null
+        platformEntryPoint = instance
     }
 
     fun onLoad() {
-        if (!init) return
+        if (platformEntryPoint == null) return
 
         try {
             loadMethod?.invoke(entryPointInstance)
@@ -98,8 +98,9 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     }
 
     fun onEnable() {
-        if (!init) return
+        if (platformEntryPoint == null) return
 
+        platformEntryPoint.setupEvents(platform)
         try {
             enableMethod?.invoke(entryPointInstance)
         } catch (e: Exception) {
@@ -108,7 +109,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     }
 
     fun onDisable() {
-        if (!init) return
+        if (platformEntryPoint == null) return
 
         try {
             disableMethod?.invoke(entryPointInstance)
@@ -124,4 +125,9 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
             get() = _instance ?: throw IllegalStateException("Flare has not been initialized yet.")
     }
 
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> PlatformEntryPoint<T>.setupEvents(plugin: Any) {
+    this.setupEvents(plugin as T)
 }
