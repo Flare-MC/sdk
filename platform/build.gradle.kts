@@ -20,4 +20,10 @@ subprojects {
     tasks.named("build") {
         finalizedBy("publishToMavenLocal")
     }
+
+    dependencies {
+        if (!name.contains("common")) {
+            implementation(project(":"))
+        }
+    }
 }
