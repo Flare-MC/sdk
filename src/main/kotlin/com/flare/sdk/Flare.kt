@@ -3,7 +3,9 @@ package com.flare.sdk
 import com.flare.sdk.annotations.DataFolder
 import com.flare.sdk.annotations.PluginConfiguration
 import com.flare.sdk.platform.Platform
+import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
+import com.flare.sdk.player.AbstractPlayerManager
 import com.flare.sdk.util.ReflectionUtil
 import java.io.File
 import java.lang.reflect.Method
@@ -25,7 +27,12 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     private val enableMethod: Method?
     private val disableMethod: Method?
 
+    private var init: Boolean = false
+    lateinit var playerManager: AbstractPlayerManager<*>
+
     init {
+        _instance = this
+
         val entryPoint = configuration.entrypoint
         try {
             entryPointInstance = entryPoint.getConstructor().newInstance()
@@ -64,9 +71,25 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
                 } else throw FlareException("Fields annotated with @PluginConfiguration should be FlareConfiguration.")
             }
         }
+
+        val platformEntry = platform.platformType.entrypoint
+
+        if (platformEntry.interfaces.any { it == PlatformEntryPoint::class.java }) {
+            try {
+                val instance = platformEntry.getConstructor().newInstance() as PlatformEntryPoint
+
+                playerManager = instance.playerManager
+
+                init = true
+            } catch (e: Exception) {
+                throw FlareException("An exception occurred while creating a platform entry point instance. ${e.message}")
+            }
+        }
     }
 
     fun onLoad() {
+        if (!init) return
+
         try {
             loadMethod?.invoke(entryPointInstance)
         } catch (e: Exception) {
@@ -75,6 +98,8 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     }
 
     fun onEnable() {
+        if (!init) return
+
         try {
             enableMethod?.invoke(entryPointInstance)
         } catch (e: Exception) {
@@ -83,10 +108,20 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     }
 
     fun onDisable() {
+        if (!init) return
+
         try {
             disableMethod?.invoke(entryPointInstance)
         } catch (e: Exception) {
             throw FlareException("An exception occurred while invoking disable method. ${e.message}")
         }
     }
+
+    companion object {
+        private var _instance: Flare? = null
+
+        val instance: Flare
+            get() = _instance ?: throw IllegalStateException("Flare has not been initialized yet.")
+    }
+
 }

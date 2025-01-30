@@ -1,6 +1,5 @@
 package com.flare.sdk.platform
 
-import com.flare.sdk.FlareConfiguration
 import java.nio.file.Path
 
 

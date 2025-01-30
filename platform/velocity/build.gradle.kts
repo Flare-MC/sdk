@@ -13,3 +13,7 @@ dependencies {
 
     implementation(project(":platform:common"))
 }
+
+kotlin {
+    jvmToolchain(17)
+}
