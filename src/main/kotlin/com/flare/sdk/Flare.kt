@@ -2,6 +2,9 @@ package com.flare.sdk
 
 import com.flare.sdk.annotations.DataFolder
 import com.flare.sdk.annotations.PluginConfiguration
+import com.flare.sdk.event.impl.PluginDisableEvent
+import com.flare.sdk.event.impl.PluginEnableEvent
+import com.flare.sdk.event.impl.PluginLoadEvent
 import com.flare.sdk.platform.Platform
 import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
@@ -92,6 +95,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
 
         try {
             loadMethod?.invoke(entryPointInstance)
+            PluginLoadEvent(this).call()
         } catch (e: Exception) {
             throw FlareException("An exception occurred while invoking load method. ${e.message}")
         }
@@ -103,6 +107,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
         platformEntryPoint.setupEvents(platform)
         try {
             enableMethod?.invoke(entryPointInstance)
+            PluginEnableEvent(this).call()
         } catch (e: Exception) {
             throw FlareException("An exception occurred while invoking enable method. ${e.message}")
         }
@@ -113,6 +118,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
 
         try {
             disableMethod?.invoke(entryPointInstance)
+            PluginDisableEvent(this).call()
         } catch (e: Exception) {
             throw FlareException("An exception occurred while invoking disable method. ${e.message}")
         }
