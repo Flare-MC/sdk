@@ -8,7 +8,7 @@ val projectGroup: String by project
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation(project(":platform:common"))
+    api(project(":platform:common"))
 }
 
 tasks.test {

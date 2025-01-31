@@ -9,5 +9,5 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
 
-    implementation(project(":platform:common"))
+    api(project(":platform:common"))
 }
