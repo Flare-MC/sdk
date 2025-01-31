@@ -20,7 +20,6 @@ class PlayerListener(private val playerManager: PlayerManager) : Listener {
 
         val binding = playerManager.addPlayer(player)
         com.flare.sdk.event.impl.player.PlayerJoinEvent(binding).call()
-        PlayerSwitchEvent(binding).call()
     }
 
     @EventHandler
