@@ -21,9 +21,14 @@ subprojects {
         finalizedBy("publishToMavenLocal")
     }
 
-    if (!name.contains("common")) {
-        dependencies {
+    dependencies {
+        if (!name.contains("common")) {
             api(project(":"))
         }
+
+        if (!name.contains("velocity")) {
+            api("net.kyori:adventure-api:4.18.0")
+        }
     }
+
 }

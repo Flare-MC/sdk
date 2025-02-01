@@ -1,5 +1,6 @@
 package com.flare.sdk.player
 
+import com.flare.sdk.command.CommandSender
 import java.util.UUID
 
 
@@ -8,9 +9,9 @@ import java.util.UUID
  * Created at: 30/01/2025 20:13
  * Created by: Dani-error
  */
-interface Player {
+interface Player : CommandSender {
 
     val uuid: UUID
-    val name: String
+    override val name: String
 
 }

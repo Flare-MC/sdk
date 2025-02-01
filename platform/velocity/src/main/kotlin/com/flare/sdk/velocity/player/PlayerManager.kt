@@ -2,6 +2,8 @@ package com.flare.sdk.velocity.player
 
 import com.flare.sdk.player.AbstractPlayerManager
 import com.velocitypowered.api.proxy.Player
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import java.util.*
 
 
@@ -19,6 +21,17 @@ class PlayerManager : AbstractPlayerManager<Player>() {
 
             override val name: String
                 get() = player.username
+
+            override fun sendMessage(message: Component) =
+                player.sendMessage(message)
+
+            override fun sendMessage(message: String) {
+                player.sendPlainMessage(message)
+            }
+
+            override fun sendTranslatedMessage(message: String) {
+                player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message))
+            }
 
         }
     }
