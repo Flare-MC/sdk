@@ -7,10 +7,12 @@ import com.flare.sdk.file.AbstractFileManager
 import com.flare.sdk.platform.Platform
 import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
+import com.flare.sdk.task.AbstractTaskManager
 import com.flare.sdk.velocity.command.CommandManager
 import com.flare.sdk.velocity.file.FileManager
 import com.flare.sdk.velocity.player.PlayerListener
 import com.flare.sdk.velocity.player.PlayerManager
+import com.flare.sdk.velocity.task.TaskManager
 import com.velocitypowered.api.proxy.ProxyServer
 
 /*
@@ -20,18 +22,21 @@ import com.velocitypowered.api.proxy.ProxyServer
  */
 class VelocityPlatform(platform: Any) : PlatformEntryPoint<Any>(platform) {
 
+    val proxyServer: ProxyServer
+
     override val type: PlatformType = PlatformType.VELOCITY
 
     override val playerManager: PlayerManager = PlayerManager()
     override val commandManager: CommandManager = CommandManager(this)
     override val fileManager: AbstractFileManager = FileManager(platform as Platform)
-    val proxyServer: ProxyServer
+    override var taskManager: AbstractTaskManager
 
     init {
         val serverField = platform.javaClass.getDeclaredField("server")
         serverField.isAccessible = true
         try {
             proxyServer = serverField.get(platform) as ProxyServer
+            taskManager = TaskManager(platform, proxyServer)
         } catch (e: Exception) {
             throw FlareException("Couldn't setup the event conversion system... ${e.message}")
         }

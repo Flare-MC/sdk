@@ -32,4 +32,8 @@ annotation class FileManagerAccessor
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
+annotation class TaskManagerAccessor
+
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
 annotation class FlareAccessor

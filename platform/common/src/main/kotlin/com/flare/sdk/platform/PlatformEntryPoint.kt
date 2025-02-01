@@ -5,6 +5,7 @@ package com.flare.sdk.platform
 import com.flare.sdk.command.AbstractCommandManager
 import com.flare.sdk.file.AbstractFileManager
 import com.flare.sdk.player.AbstractPlayerManager
+import com.flare.sdk.task.AbstractTaskManager
 
 
 /*
@@ -18,6 +19,7 @@ abstract class PlatformEntryPoint<T>(val platform: T) {
     abstract val playerManager: AbstractPlayerManager<*>
     abstract val commandManager: AbstractCommandManager<T, *>
     abstract val fileManager: AbstractFileManager
+    abstract val taskManager: AbstractTaskManager
 
     open fun setupAdventure() { }
     open fun disableAdventure() { }
