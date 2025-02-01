@@ -3,8 +3,11 @@
 package com.flare.sdk.bungee
 
 import com.flare.sdk.bungee.command.CommandManager
+import com.flare.sdk.bungee.file.FileManager
 import com.flare.sdk.bungee.player.PlayerListener
 import com.flare.sdk.bungee.player.PlayerManager
+import com.flare.sdk.file.AbstractFileManager
+import com.flare.sdk.platform.Platform
 import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences
@@ -22,6 +25,7 @@ class BungeePlatform(platform: Plugin) : PlatformEntryPoint<Plugin>(platform) {
 
     override val playerManager: PlayerManager = PlayerManager()
     override val commandManager: CommandManager = CommandManager(this)
+    override val fileManager: AbstractFileManager = FileManager(platform as Platform)
 
     override fun setupEvents() {
         platform.proxy.pluginManager.registerListener(platform, PlayerListener(playerManager))

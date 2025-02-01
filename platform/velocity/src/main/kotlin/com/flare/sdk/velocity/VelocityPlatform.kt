@@ -3,13 +3,14 @@
 package com.flare.sdk.velocity
 
 import com.flare.sdk.FlareException
-import com.flare.sdk.command.AbstractCommandManager
+import com.flare.sdk.file.AbstractFileManager
+import com.flare.sdk.platform.Platform
 import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
 import com.flare.sdk.velocity.command.CommandManager
+import com.flare.sdk.velocity.file.FileManager
 import com.flare.sdk.velocity.player.PlayerListener
 import com.flare.sdk.velocity.player.PlayerManager
-import com.velocitypowered.api.command.CommandSource
 import com.velocitypowered.api.proxy.ProxyServer
 
 /*
@@ -23,6 +24,7 @@ class VelocityPlatform(platform: Any) : PlatformEntryPoint<Any>(platform) {
 
     override val playerManager: PlayerManager = PlayerManager()
     override val commandManager: CommandManager = CommandManager(this)
+    override val fileManager: AbstractFileManager = FileManager(platform as Platform)
     val proxyServer: ProxyServer
 
     init {

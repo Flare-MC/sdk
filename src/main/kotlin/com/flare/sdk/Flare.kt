@@ -6,6 +6,7 @@ import com.flare.sdk.command.CommandSender
 import com.flare.sdk.event.impl.PluginDisableEvent
 import com.flare.sdk.event.impl.PluginEnableEvent
 import com.flare.sdk.event.impl.PluginLoadEvent
+import com.flare.sdk.file.AbstractFileManager
 import com.flare.sdk.platform.Platform
 import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
@@ -36,6 +37,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     private val platformEntryPoint: PlatformEntryPoint<*>?
     lateinit var playerManager: AbstractPlayerManager<*>
     lateinit var commandManager: AbstractCommandManager<*, *>
+    lateinit var fileManager: AbstractFileManager
 
     val consoleSender: CommandSender
         get() = commandManager.consoleSender
@@ -63,6 +65,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
 
                 playerManager = instance.playerManager
                 commandManager = instance.commandManager
+                fileManager = instance.fileManager
             } catch (e: Exception) {
                 throw FlareException("An exception occurred while creating a platform entry point instance. ${e.message}")
             }
@@ -106,6 +109,12 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
                 if (it.type.isAssignableFrom(AbstractCommandManager::class.java)) {
                     it.set(entryPointInstance, commandManager)
                 } else throw FlareException("Fields annotated with @CommandManagerAccessor should be AbstractCommandManager.")
+            } else if (it.isAnnotationPresent(FileManagerAccessor::class.java)) {
+                it.isAccessible = true
+
+                if (it.type.isAssignableFrom(AbstractFileManager::class.java)) {
+                    it.set(entryPointInstance, fileManager)
+                } else throw FlareException("Fields annotated with @FileManagerAccessor should be AbstractFileManager.")
             } else if (it.isAnnotationPresent(FlareAccessor::class.java)) {
                 it.isAccessible = true
 
@@ -166,6 +175,9 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
 
         val playerManager: AbstractPlayerManager<*>
             get() = _instance?.playerManager ?: throw IllegalStateException("Flare has not been initialized yet.")
+
+        val fileManager: AbstractFileManager
+            get() = _instance?.fileManager ?: throw IllegalStateException("Flare has not been initialized yet.")
 
     }
 

@@ -28,4 +28,8 @@ annotation class CommandManagerAccessor
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
+annotation class FileManagerAccessor
+
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
 annotation class FlareAccessor

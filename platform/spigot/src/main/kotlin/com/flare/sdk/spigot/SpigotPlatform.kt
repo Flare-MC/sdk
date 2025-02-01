@@ -2,9 +2,11 @@
 
 package com.flare.sdk.spigot
 
+import com.flare.sdk.file.AbstractFileManager
 import com.flare.sdk.platform.PlatformEntryPoint
 import com.flare.sdk.platform.PlatformType
 import com.flare.sdk.spigot.command.CommandManager
+import com.flare.sdk.spigot.file.FileManager
 import com.flare.sdk.spigot.player.PlayerListener
 import com.flare.sdk.spigot.player.PlayerManager
 import net.kyori.adventure.platform.bukkit.BukkitAudiences
@@ -23,6 +25,7 @@ class SpigotPlatform(platform: JavaPlugin) : PlatformEntryPoint<JavaPlugin>(plat
 
     override val playerManager: PlayerManager = PlayerManager()
     override val commandManager: CommandManager = CommandManager(this)
+    override val fileManager: FileManager = FileManager(platform)
 
     override fun setupAdventure() {
         adventure = BukkitAudiences.create(platform)

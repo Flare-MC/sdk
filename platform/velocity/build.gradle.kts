@@ -11,6 +11,8 @@ dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
     annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
 
+    api("org.bspfsystems:yamlconfiguration:3.0.2")
+
     api(project(":platform:common"))
 }
 
