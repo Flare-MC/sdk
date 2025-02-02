@@ -142,14 +142,14 @@ class CommandExecutor(private val name: String, private val commandManager: Comm
 
         @Suppress("UNCHECKED_CAST")
         fun getDefault(): MutableList<String> {
-            return definition.tabCompleteMethod.invoke(definition.classInstance,
+            return (definition.tabCompleteMethod.invoke(definition.classInstance,
                 CommandContext(
                     commandManager.bindSender(sender),
                     name,
                     args,
                     0
                 )
-            ) as MutableList<String>
+            ) as List<String>).toMutableList()
         }
 
         if (args.isEmpty()) {

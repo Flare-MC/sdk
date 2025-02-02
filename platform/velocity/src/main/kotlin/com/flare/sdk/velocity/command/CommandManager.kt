@@ -33,7 +33,7 @@ class CommandManager(private val _platform: VelocityPlatform) : AbstractCommandM
 
         val commandMeta: CommandMeta =
             commandManager.metaBuilder(name)
-                .plugin(this)
+                .plugin(platform)
                 .build()
 
         val commandToRegister: SimpleCommand = CommandExecutor(name, this, definition)
