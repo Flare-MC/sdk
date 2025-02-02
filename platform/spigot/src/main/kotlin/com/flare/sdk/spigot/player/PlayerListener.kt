@@ -19,7 +19,7 @@ class PlayerListener(private val playerManager: PlayerManager) : Listener {
         val player = event.player
 
         val binding = playerManager.addPlayer(player)
-        com.flare.sdk.event.impl.player.PlayerJoinEvent(binding).call()
+        com.flare.sdk.event.impl.player.PlayerJoinEvent(event, binding).call()
     }
 
     @EventHandler
@@ -28,7 +28,7 @@ class PlayerListener(private val playerManager: PlayerManager) : Listener {
 
         val binding = playerManager.removePlayer(player) ?: return
 
-        com.flare.sdk.event.impl.player.PlayerQuitEvent(binding).call()
+        com.flare.sdk.event.impl.player.PlayerQuitEvent(event, binding).call()
     }
 
 }

@@ -22,7 +22,7 @@ class PlayerListener(private val playerManager: PlayerManager) : Listener {
         val player = event.player
 
         val binding = playerManager.addPlayer(player)
-        PlayerJoinEvent(binding).call()
+        PlayerJoinEvent(event, binding).call()
     }
 
     @EventHandler
@@ -30,7 +30,7 @@ class PlayerListener(private val playerManager: PlayerManager) : Listener {
         val player = event.player
 
         val binding = playerManager.getPlayer(player) ?: return
-        PlayerSwitchEvent(binding).call()
+        PlayerSwitchEvent(event, binding).call()
     }
 
     @EventHandler
@@ -39,7 +39,7 @@ class PlayerListener(private val playerManager: PlayerManager) : Listener {
 
         val binding = playerManager.removePlayer(player) ?: return
 
-        PlayerQuitEvent(binding).call()
+        PlayerQuitEvent(event, binding).call()
     }
 
 }

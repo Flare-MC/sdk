@@ -21,3 +21,9 @@ open class EventCancellable(var cancelled: Boolean = false) : Event() {
     }
 
 }
+
+interface PlatformGetter {
+
+    val original: Any
+
+}

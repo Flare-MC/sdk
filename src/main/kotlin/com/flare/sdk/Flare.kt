@@ -135,7 +135,6 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     fun onLoad() {
         if (platformEntryPoint == null) return
 
-        platformEntryPoint.setupAdventure()
         try {
             loadMethod?.invoke(entryPointInstance)
             PluginLoadEvent(this).call()
@@ -147,6 +146,7 @@ class Flare(private val platform: Platform, private val configuration: FlareConf
     fun onEnable() {
         if (platformEntryPoint == null) return
 
+        platformEntryPoint.setupAdventure()
         platformEntryPoint.setupEvents()
         try {
             enableMethod?.invoke(entryPointInstance)
