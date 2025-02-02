@@ -20,11 +20,11 @@ class TaskManager(private val plugin: JavaPlugin) : AbstractTaskManager() {
     }
 
     override fun schedule(runnable: Runnable, delay: Long, repeat: Long, timeUnit: TimeUnit): ITask {
-        return wrap(Bukkit.getScheduler().runTaskTimer(plugin, runnable, timeUnit.toSeconds(delay) * 20L, timeUnit.toSeconds(repeat) * 20L))
+        return wrap(Bukkit.getScheduler().runTaskTimer(plugin, runnable, timeUnit.toMillis(delay) / 50L, timeUnit.toMillis(repeat) / 50L))
     }
 
     override fun scheduleLater(runnable: Runnable, delay: Long, timeUnit: TimeUnit): ITask {
-        return wrap(Bukkit.getScheduler().runTaskLater(plugin, runnable, timeUnit.toSeconds(delay) * 20L))
+        return wrap(Bukkit.getScheduler().runTaskLater(plugin, runnable, timeUnit.toMillis(delay) / 50L))
     }
 
     override fun cancel(task: ITask) {
