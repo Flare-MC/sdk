@@ -27,9 +27,9 @@ class VelocityPlatform(platform: Any) : PlatformEntryPoint<Any>(platform) {
     override val type: PlatformType = PlatformType.VELOCITY
 
     override val playerManager: PlayerManager = PlayerManager()
-    override val commandManager: CommandManager = CommandManager(this)
+    override val commandManager: CommandManager
     override val fileManager: AbstractFileManager = FileManager(platform as Platform)
-    override var taskManager: AbstractTaskManager
+    override val taskManager: AbstractTaskManager
 
     init {
         val serverField = platform.javaClass.getDeclaredField("server")
@@ -37,6 +37,7 @@ class VelocityPlatform(platform: Any) : PlatformEntryPoint<Any>(platform) {
         try {
             proxyServer = serverField.get(platform) as ProxyServer
             taskManager = TaskManager(platform, proxyServer)
+            commandManager = CommandManager(this)
         } catch (e: Exception) {
             throw FlareException("Couldn't setup the event conversion system... ${e.message}")
         }

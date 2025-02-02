@@ -76,7 +76,7 @@ abstract class AbstractCommandManager<T, S>(private val platformType: PlatformTy
     }
 
     private fun registerSubcommand(subCommand: Command, parent: List<String>) {
-        if (isDisabled(subCommand) || platformType == PlatformType.BUNGEECORD) return
+        if (isDisabled(subCommand) || platformType == PlatformType.BUNGEECORD|| platformType == PlatformType.VELOCITY) return
 
         val parentName = java.lang.String.join(".", parent)
 
