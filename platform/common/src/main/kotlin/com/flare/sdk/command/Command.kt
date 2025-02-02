@@ -34,5 +34,5 @@ abstract class Command(val commandInfo: CommandInfo) {
 
     abstract fun execute(context: CommandContext)
 
-    open fun suggest(context: CommandContext): List<String> = emptyList()
+    open fun suggest(context: CommandContext): List<String> = emptyList<String>().toMutableList()
 }
