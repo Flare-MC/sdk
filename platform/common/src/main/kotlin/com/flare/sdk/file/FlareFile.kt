@@ -78,6 +78,9 @@ class FlareFile(private val fileManager: AbstractFileManager, base: Path, fileNa
     fun contains(path: String): Boolean =
         configuration.contains(path)
 
+    fun getSection(path: String): ConfigurationSection? =
+        configuration.getSection(path)
+
     fun save() {
         try {
             configuration.save()

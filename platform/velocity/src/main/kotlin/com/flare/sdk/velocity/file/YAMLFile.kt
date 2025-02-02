@@ -1,6 +1,7 @@
 package com.flare.sdk.velocity.file
 
 import com.flare.sdk.FlareException
+import com.flare.sdk.file.ConfigurationSection
 import com.flare.sdk.file.YAMLConfiguration
 import org.bspfsystems.yamlconfiguration.file.YamlConfiguration
 import java.io.File
@@ -45,6 +46,50 @@ class YAMLFile(private val file: File) : YAMLConfiguration(file) {
     override fun getStringList(path: String): List<String> =
         configuration.getStringList(path)
 
+    private fun wrapSection(section: org.bspfsystems.yamlconfiguration.configuration.ConfigurationSection): ConfigurationSection {
+        return object : ConfigurationSection {
+            override fun contains(path: String): Boolean =
+                section.contains(path)
+
+            override fun getInteger(path: String): Int =
+                section.getInt(path)
+
+            override fun getDouble(path: String): Double =
+                section.getDouble(path)
+
+            override fun getString(path: String): String =
+                section.getString(path) ?: ""
+
+            override fun getBoolean(path: String): Boolean =
+                section.getBoolean(path)
+
+            override fun getLong(path: String): Long =
+                section.getLong(path)
+
+            override fun getStringList(path: String): List<String> =
+                section.getStringList(path)
+
+            override fun set(path: String, value: Any?) =
+                section.set(path, value)
+
+            override fun getSection(path: String): ConfigurationSection? {
+                val otherSection = section.getConfigurationSection(path) ?: return null
+
+                return wrapSection(otherSection)
+            }
+
+            override fun getKeys(): List<String> =
+                section.getKeys(false).toList()
+
+        }
+    }
+
+    override fun getSection(path: String): ConfigurationSection? {
+        val section = configuration.getConfigurationSection(path) ?: return null
+
+        return wrapSection(section)
+    }
+
     override fun save() {
         try {
             configuration.save(file)
@@ -55,4 +100,7 @@ class YAMLFile(private val file: File) : YAMLConfiguration(file) {
 
     override fun set(path: String, value: Any?) =
         configuration.set(path, value)
+
+    override fun getKeys(): List<String> =
+        configuration.getKeys(false).toList()
 }
